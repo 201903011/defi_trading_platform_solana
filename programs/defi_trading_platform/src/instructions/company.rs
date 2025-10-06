@@ -14,7 +14,9 @@ pub fn register_company(
     let company = &mut ctx.accounts.company;
     
     // Validate input
+    require!(!name.is_empty(), DefiTradingError::InvalidCompanyData);
     require!(name.len() <= 64, DefiTradingError::InvalidCompanyData);
+    require!(!symbol.is_empty(), DefiTradingError::InvalidCompanyData);
     require!(symbol.len() <= 16, DefiTradingError::InvalidCompanyData);
     require!(description.len() <= 256, DefiTradingError::InvalidCompanyData);
     require!(!platform.is_paused, DefiTradingError::PlatformPaused);
