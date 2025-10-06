@@ -66,5 +66,3 @@ async function getImportantAddresses() {
 }
 
 getImportantAddresses().catch(console.error);
-
-getImportantAddresses().catch(console.error);
