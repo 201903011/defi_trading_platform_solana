@@ -106,4 +106,29 @@ pub enum DefiTradingError {
     
     #[msg("Maximum investment exceeded")]
     MaximumInvestmentExceeded,
+    
+    // New error codes for enhanced functionality
+    #[msg("Invalid token distribution parameters")]
+    InvalidTokenDistribution,
+    
+    #[msg("Too many recipients for single transaction")]
+    TooManyRecipients,
+    
+    #[msg("No liquidity available")]
+    NoLiquidity,
+    
+    #[msg("Orderbook not found")]
+    OrderbookNotFound,
+    
+    #[msg("Market depth calculation failed")]
+    MarketDepthCalculationFailed,
+    
+    #[msg("Invalid market order type")]
+    InvalidMarketOrderType,
+    
+    #[msg("Order matching failed")]
+    OrderMatchingFailed,
+    
+    #[msg("Price level not found")]
+    PriceLevelNotFound,
 }

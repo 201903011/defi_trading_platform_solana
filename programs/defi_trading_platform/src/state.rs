@@ -286,3 +286,154 @@ impl OfferingParticipation {
         8 + // participated_at
         1; // bump
 }
+
+// New structs for enhanced orderbook functionality
+
+#[account]
+pub struct Orderbook {
+    pub company_id: u64,
+    pub token_mint: Pubkey,
+    pub total_buy_orders: u64,
+    pub total_sell_orders: u64,
+    pub best_bid: u64,  // highest buy price
+    pub best_ask: u64,  // lowest sell price
+    pub last_trade_price: u64,
+    pub total_volume: u64,
+    pub created_at: i64,
+    pub last_updated: i64,
+    pub bump: u8,
+}
+
+impl Orderbook {
+    pub const LEN: usize = 8 + // discriminator
+        8 + // company_id
+        32 + // token_mint
+        8 + // total_buy_orders
+        8 + // total_sell_orders
+        8 + // best_bid
+        8 + // best_ask
+        8 + // last_trade_price
+        8 + // total_volume
+        8 + // created_at
+        8 + // last_updated
+        1; // bump
+}
+
+#[account]
+pub struct PriceLevel {
+    pub orderbook: Pubkey,
+    pub price: u64,
+    pub side: OrderSide,
+    pub total_amount: u64,
+    pub orders_count: u64,
+    pub bump: u8,
+}
+
+impl PriceLevel {
+    pub const LEN: usize = 8 + // discriminator
+        32 + // orderbook
+        8 + // price
+        1 + // side
+        8 + // total_amount
+        8 + // orders_count
+        1; // bump
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum OrderSide {
+    Buy,
+    Sell,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq)]
+pub enum MarketOrderType {
+    Market,
+    Limit,
+}
+
+// Enhanced order struct
+#[account]
+pub struct EnhancedOrder {
+    pub id: u64,
+    pub user: Pubkey,
+    pub company_id: u64,
+    pub token_mint: Pubkey,
+    pub order_type: OrderType,
+    pub market_order_type: MarketOrderType,
+    pub amount: u64,
+    pub remaining_amount: u64,
+    pub price: u64,  // For limit orders, 0 for market orders
+    pub status: OrderStatus,
+    pub created_at: i64,
+    pub filled_at: Option<i64>,
+    pub bump: u8,
+}
+
+impl EnhancedOrder {
+    pub const LEN: usize = 8 + // discriminator
+        8 + // id
+        32 + // user
+        8 + // company_id
+        32 + // token_mint
+        1 + // order_type
+        1 + // market_order_type
+        8 + // amount
+        8 + // remaining_amount
+        8 + // price
+        1 + // status
+        8 + // created_at
+        1 + 8 + // filled_at (Option<i64>)
+        1; // bump
+}
+
+#[account]
+pub struct MarketDepth {
+    pub orderbook: Pubkey,
+    pub price_levels: Vec<PriceLevelData>,
+    pub total_buy_volume: u64,
+    pub total_sell_volume: u64,
+    pub last_updated: i64,
+    pub bump: u8,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone)]
+pub struct PriceLevelData {
+    pub price: u64,
+    pub amount: u64,
+    pub orders_count: u64,
+    pub side: OrderSide,
+}
+
+impl MarketDepth {
+    pub const LEN: usize = 8 + // discriminator
+        32 + // orderbook
+        4 + (40 * 20) + // price_levels (max 20 levels, 40 bytes each)
+        8 + // total_buy_volume
+        8 + // total_sell_volume
+        8 + // last_updated
+        1; // bump
+}
+
+#[account]
+pub struct TokenDistribution {
+    pub company_id: u64,
+    pub admin: Pubkey,
+    pub token_mint: Pubkey,
+    pub total_distributed: u64,
+    pub recipients_count: u64,
+    pub amount_per_recipient: u64,
+    pub distributed_at: i64,
+    pub bump: u8,
+}
+
+impl TokenDistribution {
+    pub const LEN: usize = 8 + // discriminator
+        8 + // company_id
+        32 + // admin
+        32 + // token_mint
+        8 + // total_distributed
+        8 + // recipients_count
+        8 + // amount_per_recipient
+        8 + // distributed_at
+        1; // bump
+}

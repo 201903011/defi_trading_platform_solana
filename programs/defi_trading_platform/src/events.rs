@@ -125,3 +125,81 @@ pub struct EscrowReleased {
     pub amount: u64,
     pub timestamp: i64,
 }
+
+// New events for enhanced functionality
+#[event]
+pub struct CompanyCreatedByAdmin {
+    pub company_id: u64,
+    pub admin: Pubkey,
+    pub name: String,
+    pub symbol: String,
+    pub token_mint: Pubkey,
+    pub initial_supply: u64,
+    pub initial_price: u64,
+    pub timestamp: i64,
+}
+
+#[event]
+pub struct TokenDistributionStarted {
+    pub company_id: u64,
+    pub admin: Pubkey,
+    pub total_recipients: u64,
+    pub amount_per_recipient: u64,
+    pub total_amount: u64,
+    pub timestamp: i64,
+}
+
+#[event]
+pub struct TokenTransferred {
+    pub from: Pubkey,
+    pub to: Pubkey,
+    pub amount: u64,
+    pub token_mint: Pubkey,
+    pub timestamp: i64,
+}
+
+#[event]
+pub struct LimitOrderCreated {
+    pub order_id: u64,
+    pub user: Pubkey,
+    pub company_id: u64,
+    pub order_type: String,
+    pub amount: u64,
+    pub price: u64,
+    pub timestamp: i64,
+}
+
+#[event]
+pub struct MarketOrderCreated {
+    pub order_id: u64,
+    pub user: Pubkey,
+    pub company_id: u64,
+    pub order_type: String,
+    pub amount: u64,
+    pub execution_price: u64,
+    pub timestamp: i64,
+}
+
+#[event]
+pub struct OrdersMatched {
+    pub trade_id: u64,
+    pub buyer: Pubkey,
+    pub seller: Pubkey,
+    pub company_id: u64,
+    pub amount: u64,
+    pub price: u64,
+    pub total_value: u64,
+    pub platform_fee: u64,
+    pub buy_order_id: u64,
+    pub sell_order_id: u64,
+    pub timestamp: i64,
+}
+
+#[event]
+pub struct MarketDepthCalculated {
+    pub company_id: u64,
+    pub orderbook: Pubkey,
+    pub total_buy_volume: u64,
+    pub total_sell_volume: u64,
+    pub timestamp: i64,
+}

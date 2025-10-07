@@ -49,6 +49,36 @@ pub mod defi_trading_platform {
         instructions::register_company(ctx, name, symbol, description)
     }
 
+    // Admin company creation with initial supply
+    pub fn admin_create_company(
+        ctx: Context<AdminCreateCompany>,
+        name: String,
+        symbol: String,
+        description: String,
+        initial_supply: u64,
+        initial_price: u64,
+    ) -> Result<()> {
+        instructions::admin_create_company(ctx, name, symbol, description, initial_supply, initial_price)
+    }
+
+    // Token distribution functions
+    pub fn distribute_tokens(
+        ctx: Context<DistributeTokens>,
+        company_id: u64,
+        recipients: Vec<Pubkey>,
+        amount_per_recipient: u64,
+    ) -> Result<()> {
+        instructions::distribute_tokens(ctx, company_id, recipients, amount_per_recipient)
+    }
+
+    pub fn transfer_to_recipient(
+        ctx: Context<TransferToRecipient>,
+        distribution_id: u64,
+        amount: u64,
+    ) -> Result<()> {
+        instructions::transfer_to_recipient(ctx, distribution_id, amount)
+    }
+
     // Token offering functions
     pub fn create_token_offering(
         ctx: Context<CreateTokenOffering>,
@@ -95,6 +125,40 @@ pub mod defi_trading_platform {
 
     pub fn cancel_order(ctx: Context<CancelOrder>) -> Result<()> {
         instructions::cancel_order(ctx)
+    }
+
+    // Enhanced trading functions
+    pub fn create_limit_order(
+        ctx: Context<CreateLimitOrder>,
+        order_type: OrderType,
+        amount: u64,
+        price: u64,
+    ) -> Result<()> {
+        instructions::create_limit_order(ctx, order_type, amount, price)
+    }
+
+    pub fn create_market_order(
+        ctx: Context<CreateMarketOrder>,
+        order_type: OrderType,
+        amount: u64,
+    ) -> Result<()> {
+        instructions::create_market_order(ctx, order_type, amount)
+    }
+
+    pub fn match_orders(
+        ctx: Context<MatchOrders>,
+        buy_order_id: u64,
+        sell_order_id: u64,
+        amount: u64,
+    ) -> Result<()> {
+        instructions::match_orders(ctx, buy_order_id, sell_order_id, amount)
+    }
+
+    pub fn calculate_market_depth(
+        ctx: Context<CalculateMarketDepth>,
+        company_id: u64,
+    ) -> Result<()> {
+        instructions::calculate_market_depth(ctx, company_id)
     }
 
     // Portfolio management
